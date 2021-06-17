@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SoftoMart.Application\SoftoMart.Application.csproj" />
+    <ProjectReference Include="..\SoftoMart.Common\SoftoMart.Common.csproj" />
   </ItemGroup>
 
 </Project>
