@@ -8,6 +8,10 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 
+using SoftoMart.Application.Common;
+using SoftoMart.Application.Services;
+using SoftoMart.Persistence;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,7 +31,8 @@ namespace SoftoMart.WebApi
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
-
+      services.AddPersistenceInsfrastructure();
+      services.AddApplicationInfrastructure();
       services.AddControllers();
       services.AddSwaggerGen(c =>
       {

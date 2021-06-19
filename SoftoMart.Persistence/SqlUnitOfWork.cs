@@ -1,39 +1,46 @@
 ﻿using SoftoMart.Application.Common.Contracts;
+using SoftoMart.Application.Common.Contracts.Repositories;
+using SoftoMart.Persistence.Repositories;
 
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SoftoMart.Persistence
 {
   public class SqlUnitOfWork : IUnitOfWork
   {
-    private string _DbString = "server=.;database=softomart;Trusted_Connection=True;";
-    public IDbConnection  Connection { get; private set; }
-    public IDbTransaction Transaction { get; private set; }
+    #region REPOSITORIES
+    IUserRepository _UserRepository;
+
+
+    public IUserRepository UserRepository => _UserRepository ??= new UserRepository(Connection, Transaction);
+    #endregion
+    public IDbConnection Connection { get; private set; }
+    private IDbTransaction Transaction;
     public void Commit()
     {
       _ = Transaction ?? throw new Exception("null exception");
       Transaction.Commit();
     }
 
-    public SqlUnitOfWork()
+    public SqlUnitOfWork(SqlConnection connection)
     {
-      Connection = new SqlConnection(_DbString);
-      Connection.Open();
+      Connection = connection;
       Transaction = Connection.BeginTransaction();
     }
 
     public void Dispose()
     {
-      Transaction?.Rollback();
+      //Transaction?.Rollback();
       Connection?.Close();
       Transaction = null;
       Connection = null;
+    }
+
+    public void Rollback()
+    {
+      Transaction?.Rollback();
     }
   }
 }

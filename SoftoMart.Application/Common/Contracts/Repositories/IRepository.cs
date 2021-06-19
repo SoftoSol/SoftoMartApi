@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Data;
 
 namespace SoftoMart.Application.Common.Contracts.Repositories
 {
   public interface IRepository<T>
   {
-    IUnitOfWork UnitOfWork { get;}
+    IDbConnection Connection { get;}
     int Create(T entity);
     T Get(int id);
     List<T> Get();
