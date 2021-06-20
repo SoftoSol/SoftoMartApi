@@ -42,6 +42,28 @@ namespace SoftoMart.Application.Services
       return newUser;
     }
 
+    public User GetUser(string username)
+    {
+      User newUser = null;
+      using (_UnitOfWork)
+      {
+        try
+        {
+          newUser = _UnitOfWork.UserRepository.GetByUsername(username);
+          _UnitOfWork.Commit();
+        }
+        catch (Exception e)
+        {
+          _UnitOfWork.Rollback();
+        }
+      }
+      return newUser;
+    }
+  //public User AuthenticateUser(string username, string password)
+  //  {
 
+  //  }
+  
   }
+  
 }

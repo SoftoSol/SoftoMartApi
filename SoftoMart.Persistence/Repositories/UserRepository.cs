@@ -23,10 +23,8 @@ namespace SoftoMart.Persistence.Repositories
 
     public int Create(User entity)
     {
-      var cmd = Connection.CreateCommand();
-      cmd.CommandType = CommandType.StoredProcedure;
+      var cmd = Connection.CreateCommand(_Transaction);
       cmd.CommandText = SqlProcedures.CreateUser;
-      cmd.Transaction = _Transaction;
       cmd.Parameters.Add(new SqlParameter("@pFirstName", entity.FirstName));
       cmd.Parameters.Add(new SqlParameter("@pLastName", entity.LastName));
       cmd.Parameters.Add(new SqlParameter("@pPhone", entity.Phone));
@@ -57,8 +55,7 @@ namespace SoftoMart.Persistence.Repositories
 
     public User GetByUsername(string username)
     { 
-      var command = Connection.CreateCommand();
-      command.CommandType = CommandType.StoredProcedure;
+      var command = Connection.CreateCommand(_Transaction);
       command.CommandText = SqlProcedures.GetUserByUsername;
       command.Parameters.Add(new SqlParameter("@pUsername", username));
       var reader = command.ExecuteReader();
