@@ -4,5 +4,6 @@
   {
     public static string CreateUser => "uspInsertUser";
     public static string GetUserByUsername => "uspGetUserByUsername";
+    public static string AuthenticateUser => "uspAuthenticateUser";
   }
 }

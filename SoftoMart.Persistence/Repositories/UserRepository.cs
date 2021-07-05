@@ -60,7 +60,34 @@ namespace SoftoMart.Persistence.Repositories
       command.Parameters.Add(new SqlParameter("@pUsername", username));
       var reader = command.ExecuteReader();
       if (!reader.Read())
+      {
+        reader.Close();
         return null;
+      }
+      var user = new User()
+      {
+        Id = Convert.ToInt32(reader["Id"]),
+        FirstName = reader["FirstName"].ToString(),
+        LastName = reader["LastName"].ToString(),
+        Phone = reader["Phone"].ToString(),
+        Username = reader["Username"].ToString(),
+      };
+      reader.Close();
+      return user;
+    }
+
+    public User Authenticate(string username, string password)
+    {
+      var command = Connection.CreateCommand(_Transaction);
+      command.CommandText = SqlProcedures.AuthenticateUser;
+      command.Parameters.Add(new SqlParameter("@pUsername", username));
+      command.Parameters.Add(new SqlParameter("@pPassword", password));
+      var reader = command.ExecuteReader();
+      if (!reader.Read())
+      {
+        reader.Close();
+        return null;
+      }
       var user = new User()
       {
         Id = Convert.ToInt32(reader["Id"]),

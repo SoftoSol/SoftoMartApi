@@ -59,11 +59,24 @@ namespace SoftoMart.Application.Services
       }
       return newUser;
     }
-  //public User AuthenticateUser(string username, string password)
-  //  {
+    public User AuthenticateUser(string username, string password)
+    {
+      User user = null;
+      using (_UnitOfWork)
+      {
+        try
+        {
+          user = _UnitOfWork.UserRepository.Authenticate(username, password);
+          _UnitOfWork.Commit();
+        }
+        catch (Exception e)
+        {
+          _UnitOfWork.Rollback();
+        }
+      }
+      return user;
+    }
 
-  //  }
-  
   }
   
 }

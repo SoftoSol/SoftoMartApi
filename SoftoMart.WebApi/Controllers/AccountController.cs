@@ -5,6 +5,8 @@ using Microsoft.IdentityModel.Tokens;
 
 using SoftoMart.Application.Common.Contracts;
 using SoftoMart.Application.Services;
+using SoftoMart.WebApi.RequestModel;
+using SoftoMart.WebApi.ResponseModel;
 
 using System;
 using System.Collections.Generic;
@@ -32,13 +34,15 @@ namespace SoftoMart.WebApi.Controllers
 
     [HttpGet]
     [Route("authenticate")]
-    public IActionResult Authenticate(string username, string password)
+    public IActionResult Authenticate(AuthenticateRequestModel model)
     {
-      var user = UserService.GetUser(username);
+      var user = UserService.AuthenticateUser(model.Username, model.Password);
+      if (user == null)
+        return Unauthorized();
       string token = null;
       if (user != null)
         token = _GenerateToken(user.Id, user.Username);
-      return Ok(token);
+      return Ok(new AuthenticateResponseModel { AccessToken = token, FirstName = user.FirstName, LastName = user.LastName, Username = user.Username });
     }
 
     private string _GenerateToken(int id, string username)
