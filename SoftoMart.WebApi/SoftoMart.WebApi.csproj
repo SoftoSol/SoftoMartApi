@@ -17,4 +17,8 @@
     <ProjectReference Include="..\SoftoMart.Persistence\SoftoMart.Persistence.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="RequestModel\Customer\" />
+  </ItemGroup>
+
 </Project>

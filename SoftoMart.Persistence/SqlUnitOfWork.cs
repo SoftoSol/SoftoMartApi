@@ -12,9 +12,13 @@ namespace SoftoMart.Persistence
   {
     #region REPOSITORIES
     IUserRepository _UserRepository;
-
+    ISellerRepository _SellerRepository;
+    ICustomerRepository _CustomerRepository;
 
     public IUserRepository UserRepository => _UserRepository ??= new UserRepository(Connection, Transaction);
+    public ISellerRepository SellerRepository => _SellerRepository ??= new SellerRepository(Connection, Transaction);
+    public ICustomerRepository CustomerRepository => _CustomerRepository??= new CustomerRepository(Connection, Transaction);
+    
     #endregion
     public IDbConnection Connection { get; private set; }
     private IDbTransaction Transaction;

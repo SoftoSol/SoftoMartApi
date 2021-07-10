@@ -10,8 +10,7 @@ using System;
 
 namespace SoftoMart.WebApi.Controllers
 {
-  [Route("api/[controller]")]
-  [ApiController]
+
   public class UserController : BaseController
   {
     private IUnitOfWorkFactory _UnitOfWorkFactory;

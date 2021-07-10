@@ -27,10 +27,10 @@ namespace SoftoMart.Application.Services
       {
         try
         {
-          if (_UnitOfWork.UserRepository.GetByUsername(username) != null)
+          if (_UnitOfWork.UserRepository.GetByUserName(username) != null)
             throw new DuplicateException("Username");
           if (_UnitOfWork.UserRepository.Create(user) > 0)
-            newUser = _UnitOfWork.UserRepository.GetByUsername(username);
+            newUser = _UnitOfWork.UserRepository.GetByUserName(username);
           _UnitOfWork.Commit();
         }
         catch(DuplicateException e)
@@ -59,7 +59,7 @@ namespace SoftoMart.Application.Services
           if (user == null)
             throw new NotFoundException("User");
           if (_UnitOfWork.UserRepository.Update(user) > 0)
-            newUser = _UnitOfWork.UserRepository.GetByUsername(username);
+            newUser = _UnitOfWork.UserRepository.GetByUserName(username);
           _UnitOfWork.Commit();
         }
         catch (NotFoundException e)
@@ -83,7 +83,7 @@ namespace SoftoMart.Application.Services
       {
         try
         {
-          newUser = _UnitOfWork.UserRepository.GetByUsername(username);
+          newUser = _UnitOfWork.UserRepository.GetByUserName(username);
           _UnitOfWork.Commit();
         }
         catch (Exception e)
@@ -100,15 +100,13 @@ namespace SoftoMart.Application.Services
       {
         try
         {
-          user = _UnitOfWork.UserRepository.GetByUsername(username);
-          //user = _UnitOfWork.UserRepository.Authenticate(username, password);
+          user = _UnitOfWork.UserRepository.GetByUserName(username);
           if (user != null)
           {
             if (user.Password == password)
               return user;
           }
           return null;
-          //_UnitOfWork.Commit();
         }
         catch (Exception e)
         {

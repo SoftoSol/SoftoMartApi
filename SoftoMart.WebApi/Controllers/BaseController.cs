@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 
 namespace SoftoMart.WebApi.Controllers
 {
+  [Route("api/[controller]")]
+  [ApiController]
   [Authorize]
   public class BaseController : ControllerBase
   {

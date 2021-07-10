@@ -2,7 +2,7 @@
 
 namespace SoftoMart.Application.Common.Contracts.Repositories
 {
-  public interface IUserRepository : IPersonRepository<User>
+  public interface ISellerRepository:IPersonRepository<Seller>
   {
   }
 }

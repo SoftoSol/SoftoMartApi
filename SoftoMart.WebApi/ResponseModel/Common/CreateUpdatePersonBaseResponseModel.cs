@@ -1,14 +1,14 @@
 ﻿using SoftoMart.Common;
-using SoftoMart.Domain.Entities;
+using SoftoMart.Domain.Common;
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SoftoMart.WebApi.ResponseModel
+namespace SoftoMart.WebApi.ResponseModel.Common
 {
-  public class CreateUpdateUserResponseModel
+  public abstract class CreateUpdatePersonBaseResponseModel
   {
     public string Id { get; set; }
     public string FirstName { get; set; }
@@ -17,13 +17,13 @@ namespace SoftoMart.WebApi.ResponseModel
     public string Username { get; set; }
     public string Phone { get; set; }
 
-    public CreateUpdateUserResponseModel(User user)
+    public CreateUpdatePersonBaseResponseModel(PersonBaseEntity person)
     {
-      this.Id = Utils.EncryptId(user.Id);
-      this.FirstName = user.FirstName;
-      this.LastName = user.LastName;
-      this.Username = user.Username;
-      this.Phone = user.Phone;
+      this.Id = Utils.EncryptId(person.Id);
+      this.FirstName = person.FirstName;
+      this.LastName = person.LastName;
+      this.Username = person.Username;
+      this.Phone = person.Phone;
     }
   }
 }

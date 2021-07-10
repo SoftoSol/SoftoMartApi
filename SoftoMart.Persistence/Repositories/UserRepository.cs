@@ -62,7 +62,7 @@ namespace SoftoMart.Persistence.Repositories
       return cmd.ExecuteNonQuery();
     }
 
-    public User GetByUsername(string username)
+    public User GetByUserName(string username)
     { 
       var command = Connection.CreateCommand(_Transaction);
       command.CommandText = SqlProcedures.GetUserByUsername;
