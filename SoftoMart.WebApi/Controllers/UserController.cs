@@ -1,13 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 using SoftoMart.Application.Common.Contracts;
+using SoftoMart.Application.Common.Exceptions;
 using SoftoMart.Application.Services;
+using SoftoMart.WebApi.RequestModel;
+using SoftoMart.WebApi.ResponseModel;
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace SoftoMart.WebApi.Controllers
 {
@@ -21,10 +20,30 @@ namespace SoftoMart.WebApi.Controllers
     public UserController(IUnitOfWorkFactory unitOfWorkFactory){ _UnitOfWorkFactory = unitOfWorkFactory; }
 
     [HttpPost]
-    [Route("Create")]
-    public IActionResult CreateUser(string username, string firstname, string lastname, string password, string phone)
+    [Route("CreateUpdate")]
+    public IActionResult CreateUpdateUser(CreateUpdateUserRequestModel model)
     {
-      return Ok(UserService.CreateUser(username, password, firstname, lastname, phone));
-    }
+      try
+      {
+        if (model.DecryptedId > -1)
+          return Ok(new CreateUpdateUserResponseModel(
+            UserService.UpdateUser
+            (model.DecryptedId,model.Username, model.Password, model.FirstName, model.LastName, model.Phone, base.GetUserId())
+            ));
+        else
+          return Ok(new CreateUpdateUserResponseModel(
+          UserService.CreateUser
+          (model.Username, model.Password, model.FirstName, model.LastName, model.Phone, base.GetUserId())
+          ));
+      }
+      catch(DuplicateException e)
+      {
+        return BadRequest(new { model.Username });
+      }
+      catch(Exception e)
+      {
+        return InternalServerError(e.Message);
+      }
+      }
   }
 }

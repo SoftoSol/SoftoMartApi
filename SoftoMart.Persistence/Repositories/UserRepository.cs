@@ -50,7 +50,16 @@ namespace SoftoMart.Persistence.Repositories
 
     public int Update(User entity)
     {
-      throw new NotImplementedException();
+      var cmd = Connection.CreateCommand(_Transaction);
+      cmd.CommandText = SqlProcedures.UpdateUser;
+      cmd.Parameters.Add(new SqlParameter("@pId", entity.Id));
+      cmd.Parameters.Add(new SqlParameter("@pFirstName", entity.FirstName));
+      cmd.Parameters.Add(new SqlParameter("@pLastName", entity.LastName));
+      cmd.Parameters.Add(new SqlParameter("@pPhone", entity.Phone));
+      cmd.Parameters.Add(new SqlParameter("@pUsername", entity.Username));
+      cmd.Parameters.Add(new SqlParameter("@pPassword", entity.Password));
+      cmd.Parameters.Add(new SqlParameter("@pCreatedBy", entity.CreatedBy));
+      return cmd.ExecuteNonQuery();
     }
 
     public User GetByUsername(string username)
@@ -58,46 +67,28 @@ namespace SoftoMart.Persistence.Repositories
       var command = Connection.CreateCommand(_Transaction);
       command.CommandText = SqlProcedures.GetUserByUsername;
       command.Parameters.Add(new SqlParameter("@pUsername", username));
-      var reader = command.ExecuteReader();
-      if (!reader.Read())
+      try
       {
+        var reader = command.ExecuteReader();
+        if (!reader.Read())
+        {
+          reader.Close();
+          return null;
+        }
+        var user = new User()
+        {
+          Id = Convert.ToInt32(reader["Id"]),
+          FirstName = reader["FirstName"].ToString(),
+          LastName = reader["LastName"].ToString(),
+          Phone = reader["Phone"].ToString(),
+          Username = reader["Username"].ToString(),
+        };
         reader.Close();
-        return null;
-      }
-      var user = new User()
-      {
-        Id = Convert.ToInt32(reader["Id"]),
-        FirstName = reader["FirstName"].ToString(),
-        LastName = reader["LastName"].ToString(),
-        Phone = reader["Phone"].ToString(),
-        Username = reader["Username"].ToString(),
-      };
-      reader.Close();
       return user;
+      }
+      catch { }
+      return null;
     }
 
-    public User Authenticate(string username, string password)
-    {
-      var command = Connection.CreateCommand(_Transaction);
-      command.CommandText = SqlProcedures.AuthenticateUser;
-      command.Parameters.Add(new SqlParameter("@pUsername", username));
-      command.Parameters.Add(new SqlParameter("@pPassword", password));
-      var reader = command.ExecuteReader();
-      if (!reader.Read())
-      {
-        reader.Close();
-        return null;
-      }
-      var user = new User()
-      {
-        Id = Convert.ToInt32(reader["Id"]),
-        FirstName = reader["FirstName"].ToString(),
-        LastName = reader["LastName"].ToString(),
-        Phone = reader["Phone"].ToString(),
-        Username = reader["Username"].ToString(),
-      };
-      reader.Close();
-      return user;
-    }
   }
 }

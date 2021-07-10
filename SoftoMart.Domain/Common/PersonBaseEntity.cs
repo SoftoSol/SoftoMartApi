@@ -3,7 +3,7 @@
 
 namespace SoftoMart.Domain.Common
 {
-  public class PersonBaseEntity : AuditableBaseEntity
+  public abstract class PersonBaseEntity : AuditableBaseEntity
   {
     private string _FirstName;
     private string _LastName;
@@ -17,7 +17,7 @@ namespace SoftoMart.Domain.Common
       get => _FirstName;
       set
       {
-        if (!_Match(NAMEREGEX, value))
+        if (!base._Match(NAMEREGEX, value))
         { throw new InvalidName(value); }
         _FirstName = value;
       }
@@ -27,7 +27,7 @@ namespace SoftoMart.Domain.Common
       get => _LastName;
       set
       {
-        if (!_Match(NAMEREGEX, value))
+        if (!base._Match(NAMEREGEX, value))
         { throw new InvalidName(value); }
         _LastName = value;
       }
@@ -45,7 +45,7 @@ namespace SoftoMart.Domain.Common
       {
         if (value.Length < 8 || value.Length > 50)
           throw new InvalidUsername("Invalid username length. it must be greater than 8 and less than 50", value);
-        if (!_Match(USERNAMEREGEX, value))
+        if (!base._Match(USERNAMEREGEX, value))
           throw new InvalidUsername("Invalid username. Username must be combination of small alphabets, capital alphabets, and special characters(_,.)", value);
         _UserName = value;
       }

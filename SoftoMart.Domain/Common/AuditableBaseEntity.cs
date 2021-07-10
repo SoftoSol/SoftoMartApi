@@ -2,9 +2,8 @@
 
 namespace SoftoMart.Domain.Common
 {
-  public abstract class AuditableBaseEntity
+  public abstract class AuditableBaseEntity : BaseEntity
   {
-    public int Id { get; set; }
     public int? CreatedBy { get; set; }
     public DateTime CreatedAt { get; set; }
     public int? LastModifiedBy { get; set; }

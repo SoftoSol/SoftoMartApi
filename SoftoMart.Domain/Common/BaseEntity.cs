@@ -7,6 +7,6 @@ namespace SoftoMart.Domain.Common
     public int Id { get; set; }
 
 
-    protected bool _Match(string pattern, string value) => new Regex(pattern).IsMatch(value);
+    protected virtual bool _Match(string pattern, string value) => new Regex(pattern).IsMatch(value);
   }
 }

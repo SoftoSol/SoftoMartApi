@@ -52,12 +52,14 @@ namespace SoftoMart.WebApi
       {
         app.UseDeveloperExceptionPage();
         app.UseSwagger();
-        app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "SoftoMart.WebApi v1"));
+        app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "SoftoMart.WebApi v1");  });
       }
 
       app.UseHttpsRedirection();
 
       app.UseRouting();
+
+      app.UseAuthentication();//we were missing this
 
       app.UseAuthorization();
 

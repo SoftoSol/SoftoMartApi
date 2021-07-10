@@ -1,20 +1,14 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 
 using SoftoMart.Application.Common.Contracts;
 using SoftoMart.Application.Services;
-using SoftoMart.WebApi.RequestModel;
 using SoftoMart.WebApi.ResponseModel;
 
 using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace SoftoMart.WebApi.Controllers
 {
@@ -23,20 +17,18 @@ namespace SoftoMart.WebApi.Controllers
   public class AccountController : ControllerBase
   {
 
-    private IConfiguration _Configuration;
     private IUnitOfWorkFactory _UnitOfWorkFactory;
     private UserService _UserService;
     public UserService UserService => _UserService ??= new UserService(_UnitOfWorkFactory.Create());
-    public AccountController(IConfiguration configuration, IUnitOfWorkFactory unitOfWorkFactory) { 
-      _Configuration = configuration;
+    public AccountController(IUnitOfWorkFactory unitOfWorkFactory) { 
       _UnitOfWorkFactory = unitOfWorkFactory;
     }
 
     [HttpGet]
     [Route("authenticate")]
-    public IActionResult Authenticate(AuthenticateRequestModel model)
+    public IActionResult Authenticate(string username, string password)
     {
-      var user = UserService.AuthenticateUser(model.Username, model.Password);
+      var user = UserService.AuthenticateUser(username, password);
       if (user == null)
         return Unauthorized();
       string token = null;
@@ -56,8 +48,8 @@ namespace SoftoMart.WebApi.Controllers
         new Claim(JwtRegisteredClaimNames.NameId, id.ToString())
       };
       var token = new JwtSecurityToken(
-        issuer: null,
-        audience: username,
+        issuer: "test",
+        audience: "audience",
         claims: claims,
         signingCredentials: hashedSecurityKey,
         expires: DateTime.UtcNow.AddMinutes(validityDuration)

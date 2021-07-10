@@ -21,7 +21,9 @@ namespace SoftoMart.WebApi
       options.TokenValidationParameters = new TokenValidationParameters
       {
         ValidateAudience = true,
+        ValidAudience= "audience",
         ValidateIssuer = true,
+        ValidIssuer="test",
         ValidateIssuerSigningKey = true,
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("my-terrible-security-secret"))
       });
@@ -31,4 +33,5 @@ namespace SoftoMart.WebApi
     public static void AddCors(this IServiceCollection services)
     { }
   }
+
 }
